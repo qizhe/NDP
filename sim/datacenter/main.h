@@ -106,6 +106,6 @@
 
 #define SWITCH_BUFFER 97
 #define RANDOM_BUFFER 3
-#define FEEDER_BUFFER 1000
+#define FEEDER_BUFFER 20
 
 #endif

@@ -37,6 +37,7 @@
 #include "main.h"
 
 uint32_t RTT = 10; // this is per link delay; identical RTT microseconds = 0.001 ms
+//uint32_t os = 1;
 int DEFAULT_NODES = 16;
 //int N=128;
 

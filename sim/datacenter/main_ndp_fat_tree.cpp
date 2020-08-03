@@ -22,8 +22,8 @@
 #include "connection_matrix.h"
 
 //#include "vl2_topology.h"
-//#include "fat_tree_topology.h"
-#include "leaf_spine_topology.h"
+#include "fat_tree_topology.h"
+//#include "leaf_spine_topology.h"
 //#include "oversubscribed_fat_tree_topology.h"
 //#include "multihomed_fat_tree_topology.h"
 //#include "star_topology.h"
@@ -38,7 +38,6 @@
 #include "main.h"
 
 double RTT = 650; // this is per link delay in ns
-extern uint32_t os;
 int DEFAULT_NODES = 432;
 #define DEFAULT_QUEUE_SIZE 8
 
@@ -113,11 +112,7 @@ int main(int argc, char **argv) {
 	    cwnd = atoi(argv[i+1]);
 	    cout << "cwnd "<< cwnd << endl;
 	    i++;
-	} else if (!strcmp(argv[i],"-os")) {
-            os = atoi(argv[i+1]);
-            cout << "os "<< os << endl;
-            i++;
-        } else if (!strcmp(argv[i],"-flowsize")){
+	} else if (!strcmp(argv[i],"-flowsize")){
             flowsize = atol(argv[i+1]);
             cout << "flowsize "<< flowsize << endl;
             i++;

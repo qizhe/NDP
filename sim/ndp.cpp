@@ -944,6 +944,7 @@ void NdpSink::connect(NdpSrc& src, Route& route)
     default:
 	// do nothing we shouldn't be using this route - call
 	// set_paths() to set routing information
+	delete &route;
 	_route = NULL;
 	break;
     }
@@ -1041,7 +1042,7 @@ void NdpSink::receivePacket(Packet& pkt) {
     p->free();
   
     _total_received+=size;
-    _src->eventlist().incrementNumOfBitsReceived((uint64_t)(size*8));
+   // _src->eventlist().incrementNumOfBitsReceived((uint64_t)(size*8));
 
     if (seqno == _cumulative_ack+1) { // it's the next expected seq no
 	_cumulative_ack = seqno + size - 1;
@@ -1050,6 +1051,7 @@ void NdpSink::receivePacket(Packet& pkt) {
 	    _received.pop_front();
 	    _cumulative_ack+= size;
 	}
+       _src->eventlist().incrementNumOfBitsReceived((uint64_t)(size*8));
     } else if (seqno < _cumulative_ack+1) {
 	//must have been a bad retransmit
     } else { // it's not the next expected sequence number
@@ -1057,8 +1059,10 @@ void NdpSink::receivePacket(Packet& pkt) {
 	    _received.push_front(seqno);
 	    //it's a drop in this simulator there are no reorderings.
 	    _drops += (size + seqno-_cumulative_ack-1)/size;
+            _src->eventlist().incrementNumOfBitsReceived((uint64_t)(size*8));
 	} else if (seqno > _received.back()) { // likely case
 	    _received.push_back(seqno);
+	    _src->eventlist().incrementNumOfBitsReceived((uint64_t)(size*8));
 	} 
 	else { // uncommon case - it fills a hole
 	    list<uint64_t>::iterator i;
@@ -1066,6 +1070,7 @@ void NdpSink::receivePacket(Packet& pkt) {
 		if (seqno == *i) break; // it's a bad retransmit
 		if (seqno < (*i)) {
 		    _received.insert(i, seqno);
+	            _src->eventlist().incrementNumOfBitsReceived((uint64_t)(size*8));
 		    break;
 		}
 	    }
