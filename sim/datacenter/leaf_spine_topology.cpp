@@ -16,7 +16,7 @@
 #include "ecnqueue.h"
 
 extern uint32_t RTT;
-uint32_t os;
+uint32_t os = 1;
 string ntoa(double n);
 string itoa(uint64_t n);
 
